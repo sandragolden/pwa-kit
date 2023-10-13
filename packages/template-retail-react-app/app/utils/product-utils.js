@@ -40,14 +40,32 @@ export const getDisplayVariationValues = (variationAttributes, values = {}) => {
  * @returns {{discountPrice: number, basePrice: number | string}}
  */
 export const getDisplayPrice = (product) => {
-    const basePrice = product?.pricePerUnit ?? product?.price
-    const promotionalPriceList = product?.productPromotions
-        ?.map((promo) => promo.promotionalPrice)
-        .filter((i) => i !== null && i !== undefined)
-    // choose the smallest price among the promotionalPrice
-    const discountPrice = promotionalPriceList?.length ? Math.min(...promotionalPriceList) : null
-    return {
-        basePrice,
-        discountPrice
+    if (
+        product.c_extend &&
+        product.c_extend.priceInfo &&
+        product.c_extend.priceInfo.salePrice?.value
+    ) {
+        const salePrice = product.c_extend.priceInfo.salePrice?.value
+        const basePrice = product.c_extend.priceInfo.originalPrice?.value
+        const promotionPrice = product.c_extend.priceInfo.promotionPrice?.value
+        const discountPrice =
+            promotionPrice && promotionPrice < salePrice ? promotionPrice : salePrice
+        return {
+            basePrice,
+            discountPrice
+        }
+    } else {
+        const basePrice = product?.pricePerUnit ?? product?.price
+        const promotionalPriceList = product?.productPromotions
+            ?.map((promo) => promo.promotionalPrice)
+            .filter((i) => i !== null && i !== undefined)
+        // choose the smallest price among the promotionalPrice
+        const discountPrice = promotionalPriceList?.length
+            ? Math.min(...promotionalPriceList)
+            : null
+        return {
+            basePrice,
+            discountPrice
+        }
     }
 }
