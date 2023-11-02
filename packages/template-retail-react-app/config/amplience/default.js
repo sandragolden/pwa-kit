@@ -6,40 +6,31 @@
  */
 module.exports = {
     default: {
-        hub: 'sfcccomposable'
+        hub: 'sfccpm01'
     },
     envs: [
         {
             name: 'production',
-            hub: 'sfcccomposable',
-            vse: '1pqebtas9axy7zeeiy96389op.staging.bigcontent.io',
+            hub: 'sfccpm01',
+            vse: 'z4x2qptwzsz01brbyg1o5sp3v.staging.bigcontent.io',
             timeMachine: 'gvzrfgnzc'
         }
-        /*
-         {
-            name: 'Environment 1',
-            hub: 'environment01',
-            vse: '{{Your VSE URL for Environment 2}}'
-        }
-         */
     ],
     visualisations: [
         {
-            name: 'Localhost',
+            name: 'localhost',
             default: true,
             url: 'http://localhost:3000'
         },
         {
-            name: 'Production',
+            name: 'staging',
             default: false,
-            url: 'https://ascc-production.mobify-storefront.com'
-        }
-        /*,
+            url: 'https://p-test-sandra.mobify-storefront-staging.com'
+        },
         {
-            name: 'UAT',
+            name: 'production',
             default: false,
-            url: 'https://ascc-uat.mobify-storefront.com'
+            url: 'https://sgolden-amplience-poc.mobify-storefront.com'
         }
-        */
     ]
 }

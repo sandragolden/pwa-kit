@@ -32,6 +32,15 @@ const options = {
 
 const runtime = getRuntime()
 
+const getRuntimeAdmin = () => {
+    return [
+        'localhost:*',
+        '*.mobify-staging.com',
+        '*.mobify-storefront-staging.com',
+        '*.mobify-storefront.com'
+    ]
+}
+
 const {handler} = runtime.createHandler(options, (app) => {
     // Set HTTP security headers
     app.use(
@@ -56,7 +65,8 @@ const {handler} = runtime.createHandler(options, (app) => {
                         '*.staging.bigcontent.io',
                         '*.brightcove.net',
                         '*.stylitics.com',
-                        "'unsafe-inline'"
+                        "'unsafe-inline'",
+                        ...getRuntimeAdmin()
                     ],
                     'connect-src': [
                         "'unsafe-eval'",
@@ -65,7 +75,8 @@ const {handler} = runtime.createHandler(options, (app) => {
                         'cdn.media.amplience.net',
                         'cdn.static.amplience.net',
                         '*.staging.bigcontent.io',
-                        '*.stylitics.com'
+                        '*.stylitics.com',
+                        ...getRuntimeAdmin()
                     ],
                     'default-src': [
                         "'self'",
@@ -76,9 +87,10 @@ const {handler} = runtime.createHandler(options, (app) => {
                         '*.staging.bigcontent.io',
                         '*.brightcove.net',
                         '*.stylitics.com',
-                        'data:'
+                        'data:',
+                        ...getRuntimeAdmin()
                     ],
-                    'frame-ancestors': ["'self'", '*.amplience.net']
+                    'frame-ancestors': ["'self'", '*.amplience.net', ...getRuntimeAdmin()]
                 }
             }
         })
