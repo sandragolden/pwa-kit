@@ -65,11 +65,20 @@ const {handler} = runtime.createHandler(options, (app) => {
                     ],
                     'script-src': [
                         // Used by the service worker in /worker/main.js
-                        'storage.googleapis.com'
+                        'storage.googleapis.com',
+                        // SFDC embedded messaging
+                        "'unsafe-inline'",
+                        '*.my.site.com'
                     ],
                     'connect-src': [
                         // Connect to Einstein APIs
-                        'api.cquotient.com'
+                        'api.cquotient.com',
+                        // SFDC embedded messaging
+                        '*.my.salesforce-scrt.com'
+                    ],
+                    'frame-src': [
+                        // SFDC embedded messaging
+                        '*.my.site.com'
                     ]
                 }
             }
