@@ -45,6 +45,7 @@ import DrawerMenu from '@salesforce/retail-react-app/app/components/drawer-menu'
 import ListMenu from '@salesforce/retail-react-app/app/components/list-menu'
 import {HideOnDesktop, HideOnMobile} from '@salesforce/retail-react-app/app/components/responsive'
 import AboveHeader from '@salesforce/retail-react-app/app/components/_app/partials/above-header'
+import EmbeddedMessaging from '../embedded-messaging'
 
 // Hooks
 import {AuthModal, useAuthModal} from '@salesforce/retail-react-app/app/hooks/use-auth-modal'
@@ -52,6 +53,7 @@ import {AddToCartModalProvider} from '@salesforce/retail-react-app/app/hooks/use
 import useMultiSite from '@salesforce/retail-react-app/app/hooks/use-multi-site'
 import {useCurrentCustomer} from '@salesforce/retail-react-app/app/hooks/use-current-customer'
 import {useCurrentBasket} from '@salesforce/retail-react-app/app/hooks/use-current-basket'
+import useSitePreferences from '@salesforce/retail-react-app/app/hooks/use-site-preferences'
 
 // Localization
 import {IntlProvider} from 'react-intl'
@@ -71,7 +73,8 @@ import {
     CAT_MENU_DEFAULT_NAV_SSR_DEPTH,
     CAT_MENU_DEFAULT_ROOT_CATEGORY,
     DEFAULT_LOCALE,
-    ACTIVE_DATA_ENABLED
+    ACTIVE_DATA_ENABLED,
+    COMMERCE_CONCIERGE
 } from '@salesforce/retail-react-app/app/constants'
 
 import Seo from '@salesforce/retail-react-app/app/components/seo'
@@ -108,6 +111,25 @@ const useLazyLoadCategories = () => {
                 dataArray
             )
         }
+    }
+}
+
+const useEmbeddedMessaging = () => {
+    const {data: commerceConciergeSitePrefResult} = useSitePreferences({
+        action: 'byGroup',
+        ids: [COMMERCE_CONCIERGE.SITE_PREF_GROUP_ID]
+    })
+
+    const sitePreferences =
+        commerceConciergeSitePrefResult?.[COMMERCE_CONCIERGE.SITE_PREF_GROUP_ID]?.sitePreferences
+    const isEnabled =
+        sitePreferences?.[COMMERCE_CONCIERGE.SITE_PREFS.ENABLE_EMBEDDED_MESSAGING]?.value || false
+    const codeSnippet =
+        sitePreferences?.[COMMERCE_CONCIERGE.SITE_PREFS.CODE_SNIPPET]?.value?.source || null
+
+    return {
+        isEnabled,
+        codeSnippet
     }
 }
 
@@ -285,6 +307,7 @@ const App = (props) => {
                             type="text/javascript"
                         ></script>
                     )}
+                    <meta name="referrer" content="origin" />
                 </Helmet>
                 <IntlProvider
                     onError={(err) => {
@@ -427,6 +450,7 @@ const App = (props) => {
                         async="async"
                     ></script>
                 )}
+                <EmbeddedMessaging {...useEmbeddedMessaging()} />
             </StorefrontPreview>
         </Box>
     )

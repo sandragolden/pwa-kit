@@ -138,3 +138,12 @@ export const REMOVE_UNAVAILABLE_CART_ITEM_DIALOG_CONFIG = {
     }),
     onPrimaryAction: noop
 }
+
+// Commerce Concierge
+export const COMMERCE_CONCIERGE = {
+    SITE_PREF_GROUP_ID: 'Commerce Concierge',
+    SITE_PREFS: {
+        ENABLE_EMBEDDED_MESSAGING: 'enableEmbeddedMessaging',
+        CODE_SNIPPET: 'embeddedMessagingCodeSnippet'
+    }
+}
